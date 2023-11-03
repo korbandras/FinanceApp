@@ -12,6 +12,7 @@ public class MainActivity extends Activity {
     private EditText editTextDueDate;
     private EditText editTextTargetSum;
     private TextView textViewResult;
+    private TextView textViewResult2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class MainActivity extends Activity {
         editTextDueDate = findViewById(R.id.editTextDueDate);
         editTextTargetSum = findViewById(R.id.editTextTargetSum);
         textViewResult = findViewById(R.id.textViewResult);
+        textViewResult2 = findViewById(R.id.textViewResult2);
     }
 
     public void calculateMonthlySavings(View view) {
@@ -31,16 +33,18 @@ public class MainActivity extends Activity {
         double expenses = Double.parseDouble(editTextExpenses.getText().toString());
         int dueDate = Integer.parseInt(editTextDueDate.getText().toString());
         double targetSum = Double.parseDouble(editTextTargetSum.getText().toString());
+        double netpositive = income - expenses;
+        double permonth;
 
-        if (income <= expenses || dueDate <= 0 || targetSum <= 0) {
-            textViewResult.setText("It's not possible");
-        } else {
-            double monthlySavings = (targetSum / dueDate) - (expenses - income);
-            if (monthlySavings <= 0) {
-                textViewResult.setText("It's not possible");
-            } else {
-                textViewResult.setText("Save $" + String.format("%.2f", monthlySavings) + " monthly to reach your target by the due date.");
-            }
+        if(targetSum / dueDate >= netpositive || income < expenses || dueDate <= 0 || targetSum <= 0){
+            textViewResult.setText("Not possible");
         }
+        else{
+            permonth = targetSum / dueDate;
+            textViewResult.setText(String.format("Save monthly $%.2f to achive goal", permonth));
+        }
+
+        //textViewResult.setText(String.format("%.2f", netpositive));
+        //textViewResult2.setText(String.format("%.2f", permonth));
     }
 }
