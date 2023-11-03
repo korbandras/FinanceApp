@@ -34,17 +34,16 @@ public class MainActivity extends Activity {
         int dueDate = Integer.parseInt(editTextDueDate.getText().toString());
         double targetSum = Double.parseDouble(editTextTargetSum.getText().toString());
         double netpositive = income - expenses;
-        double permonth;
 
         if(targetSum / dueDate >= netpositive || income < expenses || dueDate <= 0 || targetSum <= 0){
             textViewResult.setText("Not possible");
         }
         else{
-            permonth = targetSum / dueDate;
-            textViewResult.setText(String.format("Save monthly $%.2f to achive goal", permonth));
-        }
+            double permonth = targetSum / dueDate;
+            double max = netpositive;
 
-        //textViewResult.setText(String.format("%.2f", netpositive));
-        //textViewResult2.setText(String.format("%.2f", permonth));
+            textViewResult.setText(String.format("Save a minimum of $%.2f per month to achieve goal", permonth));
+            textViewResult2.setText(String.format("Maximum save available in a month is $%.2f", max));
+        }
     }
 }
