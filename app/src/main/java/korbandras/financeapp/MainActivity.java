@@ -3,8 +3,12 @@ package korbandras.financeapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends Activity {
     private EditText editTextIncome;
@@ -13,6 +17,7 @@ public class MainActivity extends Activity {
     private EditText editTextTargetSum;
     private TextView textViewResult;
     private TextView textViewResult2;
+    private Switch switchDarkMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,20 @@ public class MainActivity extends Activity {
         editTextTargetSum = findViewById(R.id.editTextTargetSum);
         textViewResult = findViewById(R.id.textViewResult);
         textViewResult2 = findViewById(R.id.textViewResult2);
+
+        switchDarkMode = findViewById(R.id.switchDarkMode);
+        switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Enable dark mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    // Disable dark mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            }
+        });
     }
 
     public void calculateMonthlySavings(View view) {
