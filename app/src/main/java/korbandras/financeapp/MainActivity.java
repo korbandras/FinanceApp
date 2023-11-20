@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
     private EditText editTextTargetSum;
     private TextView textViewResult;
     private TextView textViewResult2;
+    private TextView textViewResult3;
     private Switch switchDarkMode;
 
     @Override
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
         editTextTargetSum = findViewById(R.id.editTextTargetSum);
         textViewResult = findViewById(R.id.textViewResult);
         textViewResult2 = findViewById(R.id.textViewResult2);
+        textViewResult3 = findViewById(R.id.textViewResult3);
 
         switchDarkMode = findViewById(R.id.switchDarkMode);
         switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -60,9 +62,12 @@ public class MainActivity extends Activity {
         else{
             double permonth = targetSum / dueDate;
             double max = netpositive;
+            double months = targetSum / max;
 
-            textViewResult.setText(String.format("Save a minimum of $%.2f per month to achieve goal", permonth));
-            textViewResult2.setText(String.format("Maximum save available in a month is $%.2f", max));
+            textViewResult.setText(String.format("Save a minimum of $%.2f per month to achieve goal.", permonth));
+            textViewResult2.setText(String.format("Maximum save available in a month is $%.2f.", max));
+            textViewResult3.setText(String.format("By saving the max amount per month you can achieve your goal in %.1f months" +
+                    " compared to %d months given.", months, dueDate));
         }
     }
 }
