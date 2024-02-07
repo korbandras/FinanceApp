@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatDelegate;
 
-public class MainActivity extends Activity {
+public class NewData extends Activity {
     private EditText editTextIncome;
     private EditText editTextExpenses;
     private EditText editTextDueDate;
@@ -22,7 +18,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.newdata);
 
         editTextIncome = findViewById(R.id.editTextIncome);
         editTextExpenses = findViewById(R.id.editTextExpenses);
@@ -38,7 +34,7 @@ public class MainActivity extends Activity {
                 String dueDate = editTextDueDate.getText().toString();
                 String sum = editTextTargetSum.getText().toString();
 
-                Intent intent = new Intent(MainActivity.this, Loading.class);
+                Intent intent = new Intent(NewData.this, Loading.class);
 
                 intent.putExtra("Income",income);
                 intent.putExtra("Expenses",expenses);

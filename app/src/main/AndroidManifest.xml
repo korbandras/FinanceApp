@@ -18,14 +18,9 @@
             android:label="@string/title_activity_loading"
             android:theme="@style/Theme.FinanceApp" />
         <activity
-            android:name=".Results"
-            android:exported="false"
-            android:label="Results"
-            android:theme="@style/Theme.FinanceApp" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Decide"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="Decide"
             android:theme="@style/Theme.FinanceApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +28,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Results"
+            android:exported="false"
+            android:label="Results"
+            android:theme="@style/Theme.FinanceApp" />
+        <activity
+            android:name=".NewData"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.FinanceApp" />
+        <activity
+            android:name=".LoadData"
+            android:exported="false"
+            android:label="LoadData"
+            android:theme="@style/Theme.FinanceApp"/>
     </application>
 
 </manifest>
