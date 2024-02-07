@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ public class Results extends Activity {
     private TextView results1;
     private TextView results2;
     private TextView results3;
+    private Button returnhome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,7 @@ public class Results extends Activity {
         results1 = findViewById(R.id.textViewResult);
         results2 = findViewById(R.id.textViewResult2);
         results3 = findViewById(R.id.textViewResult3);
+        returnhome = findViewById(R.id.returnHome);
 
         Intent intent = getIntent();
         String receivedIncome = intent.getStringExtra("Income");
@@ -45,5 +48,13 @@ public class Results extends Activity {
             results3.setText(String.format("By saving the max amount per month you can achieve your goal in %.1f months" +
                     " compared to %d month(s) given.", months, dueDate));
         }
+
+        returnhome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Results.this, Decide.class);
+                startActivity(intent);
+            }
+        });
     }
 }
