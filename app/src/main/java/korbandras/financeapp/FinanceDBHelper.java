@@ -4,19 +4,21 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+
 public class FinanceDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Finance.db";
+    public static final String DATABASE_NAME = "Finance";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + Finance.FinanceEntry.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + Finance.FinanceEntry.TABLE_NAME + " (" +
                     Finance.FinanceEntry.COLUMN_ID + " INTEGER PRIMARY KEY," +
                     Finance.FinanceEntry.COLUMN_INCOME + " TEXT," +
                     Finance.FinanceEntry.COLUMN_EXPENSES + " TEXT," +
                     Finance.FinanceEntry.COLUMN_DUEDATE + " TEXT," +
                     Finance.FinanceEntry.COLUMN_TARGETSUM + " TEXT)";
 
-    private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + Finance.FinanceEntry.TABLE_NAME;
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + Finance.FinanceEntry.TABLE_NAME;
 
     public FinanceDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
