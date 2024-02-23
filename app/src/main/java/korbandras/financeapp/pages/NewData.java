@@ -1,4 +1,4 @@
-package korbandras.financeapp;
+package korbandras.financeapp.pages;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,20 +8,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import korbandras.financeapp.sql_firstTry.DBManager;
+import korbandras.financeapp.R;
+
 public class NewData extends Activity {
     private EditText editTextIncome;
     private EditText editTextExpenses;
     private EditText editTextDueDate;
     private EditText editTextTargetSum;
     private Button calculateButton;
-    private DBManager dbHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newdata);
-        dbHelper = new DBManager(this);
 
         editTextIncome = findViewById(R.id.editTextIncome);
         editTextExpenses = findViewById(R.id.editTextExpenses);
@@ -48,10 +49,6 @@ public class NewData extends Activity {
             Toast.makeText(NewData.this, "Please fill all fields",Toast.LENGTH_SHORT).show();
             return;
         }
-
-        dbHelper.open();
-        dbHelper.insert(income, expenses, dueDate, sum);
-        dbHelper.close();
 
         Intent intent = new Intent(NewData.this, Loading.class);
 

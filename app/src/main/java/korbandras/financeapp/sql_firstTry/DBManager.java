@@ -1,4 +1,4 @@
-package korbandras.financeapp;
+package korbandras.financeapp.sql_firstTry;
 
 import android.content.ContentValues;
 import android.content.Context;

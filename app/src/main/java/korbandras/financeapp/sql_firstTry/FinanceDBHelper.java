@@ -1,8 +1,10 @@
-package korbandras.financeapp;
+package korbandras.financeapp.sql_firstTry;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import korbandras.financeapp.sql_firstTry.Finance;
 
 
 public class FinanceDBHelper extends SQLiteOpenHelper {

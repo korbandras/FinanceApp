@@ -1,4 +1,4 @@
-package korbandras.financeapp;
+package korbandras.financeapp.pages;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import korbandras.financeapp.R;
 
 public class Loading extends Activity {
     private ProgressBar progressBar;

@@ -1,12 +1,13 @@
-package korbandras.financeapp;
+package korbandras.financeapp.pages;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import korbandras.financeapp.R;
 
 public class Results extends Activity {
     private TextView results1;

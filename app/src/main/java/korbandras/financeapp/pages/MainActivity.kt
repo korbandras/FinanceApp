@@ -1,10 +1,12 @@
+package korbandras.financeapp.pages
+
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import korbandras.financeapp.R
-
+/*
 class MainActivity : AppCompatActivity() {
     private lateinit var editTextIncome: EditText
     private lateinit var editTextExpenses: EditText
@@ -43,3 +45,4 @@ class MainActivity : AppCompatActivity() {
 
     private fun Double.format(digits: Int) = "%.${digits}f".format(this)
 }
+*/
