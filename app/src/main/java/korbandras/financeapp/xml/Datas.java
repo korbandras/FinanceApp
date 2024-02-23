@@ -1,47 +1,47 @@
 package korbandras.financeapp.xml;
 
 public class Datas {
-    private int income;
-    private int expenses;
-    private int dueDate;
-    private int targetSum;
+    private String income;
+    private String expenses;
+    private String dueDate;
+    private String targetSum;
 
-    public Datas(int income, int expenses, int dueDate, int targetSum){
+    public Datas(String income, String expenses, String dueDate, String targetSum){
         this.income = income;
         this.expenses = expenses;
         this.dueDate = dueDate;
         this.targetSum = targetSum;
     }
 
-    public int getIncome() {
+    public String getIncome() {
         return income;
     }
 
-    public void setIncome(int income) {
+    public void setIncome(String income) {
         this.income = income;
     }
 
-    public int getExpenses() {
+    public String getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(int expenses) {
+    public void setExpenses(String expenses) {
         this.expenses = expenses;
     }
 
-    public int getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(int dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
-    public int getTargetSum() {
+    public String getTargetSum() {
         return targetSum;
     }
 
-    public void setTargetSum(int targetSum) {
+    public void setTargetSum(String targetSum) {
         this.targetSum = targetSum;
     }
 }
