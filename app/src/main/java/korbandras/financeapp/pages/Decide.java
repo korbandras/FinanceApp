@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import korbandras.financeapp.sql_firstTry.FinanceData;
 import korbandras.financeapp.R;
+import korbandras.financeapp.sql_firstTry.FinanceData;
 
 public class Decide extends Activity {
     private Button loadData;

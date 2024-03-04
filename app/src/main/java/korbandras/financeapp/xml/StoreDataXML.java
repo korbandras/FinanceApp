@@ -17,7 +17,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class StoreDataXML {
-    public static void saveToXML(ArrayList<Datas> data, String filePath) {
+    public static void saveToXML(ArrayList<Datas> data, FileOutputStream fos) {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element root = document.createElement("DataEntry");
@@ -33,7 +33,7 @@ public class StoreDataXML {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(new FileOutputStream(filePath));
+            StreamResult result = new StreamResult(fos); // Use the provided FileOutputStream
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(source, result);
         } catch (Exception e) {

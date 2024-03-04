@@ -3,30 +3,32 @@ package korbandras.financeapp.pages;
 import static korbandras.financeapp.xml.StoreDataXML.readFromXML;
 import static korbandras.financeapp.xml.StoreDataXML.saveToXML;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import korbandras.financeapp.xml.Datas;
 import korbandras.financeapp.R;
 
 public class NewData extends Activity {
-    private static final String file = "app/src/main/java/korbandras/financeapp/xml/Data.xml";
+    private static final String FileName = "Data.xml";
     private EditText editTextIncome;
     private EditText editTextExpenses;
     private EditText editTextDueDate;
     private EditText editTextTargetSum;
     private Button calculateButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +65,22 @@ public class NewData extends Activity {
 
         Datas newData = new Datas(income, expenses, dueDate, sum);
         dataList.add(newData);
-        saveToXML(dataList,file);
 
-        Intent intent = new Intent(NewData.this, Loading.class);
+        try{
+            FileOutputStream fos = openFileOutput(FileName, MODE_PRIVATE);
+            saveToXML(dataList,fos);
+            fos.close();
 
-        intent.putExtra("Income",income);
-        intent.putExtra("Expenses",expenses);
-        intent.putExtra("DueDate",dueDate);
-        intent.putExtra("Sum",sum);
-
-        startActivity(intent);
+            Intent intent = new Intent(NewData.this, Loading.class);
+            intent.putExtra("Income",income);
+            intent.putExtra("Expenses",expenses);
+            intent.putExtra("DueDate",dueDate);
+            intent.putExtra("Sum",sum);
+            startActivity(intent);
+        }catch(IOException e){
+            e.printStackTrace();
+            Toast.makeText(NewData.this, "Error saving data", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
