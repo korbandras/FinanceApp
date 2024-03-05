@@ -9,7 +9,7 @@ import android.widget.Button;
 import korbandras.financeapp.R;
 import korbandras.financeapp.sql_firstTry.FinanceData;
 
-public class Decide extends Activity {
+public class FinanceApp extends Activity {
     private Button loadData;
     private Button newData;
     private FinanceData dataSouce;
@@ -27,7 +27,7 @@ public class Decide extends Activity {
         newData.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(Decide.this, NewData.class);
+                Intent intent = new Intent(FinanceApp.this, NewData.class);
                 startActivity(intent);
             }
         });
@@ -35,7 +35,7 @@ public class Decide extends Activity {
         loadData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(Decide.this, LoadData.class);
+                Intent intent2 = new Intent(FinanceApp.this, LoadData.class);
                 startActivity(intent2);
             }
         });

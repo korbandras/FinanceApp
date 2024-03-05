@@ -53,7 +53,7 @@ public class Results extends Activity {
         returnhome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Results.this, Decide.class);
+                Intent intent = new Intent(Results.this, FinanceApp.class);
                 startActivity(intent);
             }
         });
