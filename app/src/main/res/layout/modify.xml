@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".pages.NewData">
+
+    <EditText
+        android:id="@+id/editTextIncomeModify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monthly Income"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/editTextExpensesModify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monthly Expenses"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/editTextDueDateModify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Due Date (in months)"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/editTextTargetSumModify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Target Sum"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/modifyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modify data"
+        />
+
+</LinearLayout>

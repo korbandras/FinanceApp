@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import korbandras.financeapp.xml.StoreAndLoadXML;
 public class LoadData extends Activity {
     private ListView listView;
     private Button addNew;
+    private Button modifyID;
+    private EditText idIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,9 @@ public class LoadData extends Activity {
         setContentView(R.layout.loaddata);
 
         addNew = findViewById(R.id.addNew);
-        listView = findViewById(R.id.Percentage); // Ensure this ID matches your ListView in the layout
+        listView = findViewById(R.id.Percentage);
+        modifyID = findViewById(R.id.modifyByID);
+        idIn = findViewById(R.id.editID);
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,6 +39,16 @@ public class LoadData extends Activity {
                 // unless loadData() conditionally determines if NewData should be started.
                 loadData();
                 Intent intent = new Intent(LoadData.this, NewData.class);
+                startActivity(intent);
+            }
+        });
+
+        modifyID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoadData.this, ModifyData.class);
+                String inID = modifyID.getText().toString();
+                intent.putExtra("id",inID);
                 startActivity(intent);
             }
         });
