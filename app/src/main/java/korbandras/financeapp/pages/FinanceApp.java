@@ -7,22 +7,22 @@ import android.view.View;
 import android.widget.Button;
 
 import korbandras.financeapp.R;
-import korbandras.financeapp.sql_firstTry.FinanceData;
+import korbandras.financeapp.xml.StoreAndLoadXML;
 
 public class FinanceApp extends Activity {
     private Button loadData;
     private Button newData;
-    private FinanceData dataSouce;
+    private Button delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.decide);
+        setContentView(R.layout.financeapp);
 
         loadData = findViewById(R.id.LoadData);
         newData = findViewById(R.id.NewData);
+        delete = findViewById(R.id.DeleteData);
 
-        dataSouce = new FinanceData(this);
 
         newData.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -37,6 +37,13 @@ public class FinanceApp extends Activity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(FinanceApp.this, LoadData.class);
                 startActivity(intent2);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreAndLoadXML.deleteAllData(getApplicationContext());
             }
         });
     }

@@ -1,6 +1,7 @@
 package korbandras.financeapp.xml;
 
 public class Datas {
+    private int id;
     private String income;
     private String expenses;
     private String dueDate;
@@ -43,5 +44,13 @@ public class Datas {
 
     public void setTargetSum(String targetSum) {
         this.targetSum = targetSum;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
