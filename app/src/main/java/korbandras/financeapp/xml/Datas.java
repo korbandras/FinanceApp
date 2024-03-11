@@ -14,6 +14,14 @@ public class Datas {
         this.targetSum = targetSum;
     }
 
+    public Datas(int id, String income, String expenses, String dueDate, String targetSum){
+        this.id = id;
+        this.income = income;
+        this.expenses = expenses;
+        this.dueDate = dueDate;
+        this.targetSum = targetSum;
+    }
+
     public String getIncome() {
         return income;
     }

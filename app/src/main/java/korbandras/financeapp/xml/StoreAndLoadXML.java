@@ -21,60 +21,61 @@ public class StoreAndLoadXML {
     private static final String FILENAME = "Data.xml";
 
     // Save data to XML file
-    public static void saveXML(Context context, List<Datas> newDataList){
-        List<Datas> exsistingDataList = readFromXML(context);
+    public static void saveXML(Context context, List<Datas> newDataList) {
+        List<Datas> existingDataList = readFromXML(context);
 
-        int highestID = exsistingDataList.stream().mapToInt(Datas::getId).max().orElse(0);
-        for(Datas data : newDataList){
-            if(data.getId() == 0){
+        int highestID = existingDataList.stream().mapToInt(Datas::getId).max().orElse(0);
+        for (Datas data : newDataList) {
+            if (data.getId() == 0) { // Assign ID only if it's a new entry without an ID
                 highestID++;
                 data.setId(highestID);
             }
         }
 
-        exsistingDataList.addAll(newDataList);
+        existingDataList.addAll(newDataList); // Combine existing with new
 
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
 
-        try{
-            File file = new File(context.getExternalFilesDir(null),FILENAME);
-            FileOutputStream fileOutputStream = new FileOutputStream(file,false);
+        try {
+            File file = new File(context.getExternalFilesDir(null), FILENAME);
+            FileOutputStream fileOutputStream = new FileOutputStream(file, false);
 
             serializer.setOutput(writer);
-            serializer.startDocument("UTF-8",true);
-            serializer.startTag("","datas");
+            serializer.startDocument("UTF-8", true);
+            serializer.startTag("", "datas");
 
-            for(Datas data : exsistingDataList){
-                serializer.startTag("","data");
+            for (Datas data : existingDataList) {
+                serializer.startTag("", "data");
+                serializer.attribute("", "id", Integer.toString(data.getId()));
 
-                serializer.startTag("","income");
+                serializer.startTag("", "income");
                 serializer.text(data.getIncome());
-                serializer.endTag("","income");
+                serializer.endTag("", "income");
 
-                serializer.startTag("","expenses");
+                serializer.startTag("", "expenses");
                 serializer.text(data.getExpenses());
-                serializer.endTag("","expenses");
+                serializer.endTag("", "expenses");
 
-                serializer.startTag("","dueDate");
+                serializer.startTag("", "dueDate");
                 serializer.text(data.getDueDate());
-                serializer.endTag("","dueDate");
+                serializer.endTag("", "dueDate");
 
-                serializer.startTag("","targetSum");
+                serializer.startTag("", "targetSum");
                 serializer.text(data.getTargetSum());
-                serializer.endTag("","targetSum");
+                serializer.endTag("", "targetSum");
 
-                serializer.endTag("","data");
+                serializer.endTag("", "data");
             }
 
-            serializer.endTag("","datas");
+            serializer.endTag("", "datas");
             serializer.endDocument();
 
             fileOutputStream.write(writer.toString().getBytes());
             fileOutputStream.close();
 
-        }catch (Exception e){
-            Log.e(TAG,"error saving data", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving data", e);
         }
     }
 
@@ -93,13 +94,16 @@ public class StoreAndLoadXML {
 
             int eventType = parser.getEventType();
             Datas currentData = null;
+            int currentId = 0; // Variable to hold the current ID
             String income = "", expenses = "", dueDate = "", targetSum = "";
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 String tagName;
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
                         tagName = parser.getName();
-                        if ("income".equals(tagName)) {
+                        if ("data".equals(tagName)) {
+                            currentId = Integer.parseInt(parser.getAttributeValue(null, "id"));
+                        } else if ("income".equals(tagName)) {
                             income = parser.nextText();
                         } else if ("expenses".equals(tagName)) {
                             expenses = parser.nextText();
@@ -112,9 +116,11 @@ public class StoreAndLoadXML {
                     case XmlPullParser.END_TAG:
                         tagName = parser.getName();
                         if ("data".equals(tagName)) {
-                            Datas newData = new Datas(income, expenses, dueDate, targetSum);
+                            Datas newData = new Datas(currentId, income, expenses, dueDate, targetSum);
                             dataList.add(newData);
-                            income = expenses = dueDate = targetSum = ""; // Reset for next data
+                            // Reset variables for the next data entry
+                            income = expenses = dueDate = targetSum = "";
+                            currentId = 0;
                         }
                         break;
                 }
@@ -128,28 +134,30 @@ public class StoreAndLoadXML {
         return dataList;
     }
 
-    public void updateEntry(Context context, int id, String newIncome, String newExpenses, String newDueDate, String newSum){
+    // Update an entry by ID
+    public static void updateEntry(Context context, int id, String newIncome, String newExpenses, String newDueDate, String newTargetSum) {
         List<Datas> datasList = readFromXML(context);
-        for(Datas data : datasList){
-            if(data.getId() == id){
+        for (Datas data : datasList) {
+            if (data.getId() == id) {
                 data.setIncome(newIncome);
                 data.setExpenses(newExpenses);
                 data.setDueDate(newDueDate);
-                data.setTargetSum(newSum);
-                break;
+                data.setTargetSum(newTargetSum);
+                break; // Stop loop once the matching ID is found and updated
             }
         }
-        saveXML(context,datasList);
+        saveXML(context, datasList); // Save the updated list back to XML
     }
 
+    // Delete all data
     public static void deleteAllData(Context context) {
-        List<Datas> emptyList = new ArrayList<>();
-        saveXML(context,emptyList);
+        saveXML(context, new ArrayList<>()); // Save an empty list to overwrite existing data
     }
 
-    public static void deleteByID(Context context, int id){
+    // Delete a specific entry by ID
+    public static void deleteByID(Context context, int id) {
         List<Datas> datasList = readFromXML(context);
-        datasList.removeIf(data -> data.getId() == id);
-        saveXML(context,datasList);
+        datasList.removeIf(data -> data.getId() == id); // Remove the entry with the specified ID
+        saveXML(context, datasList); // Save the modified list back to XML
     }
 }

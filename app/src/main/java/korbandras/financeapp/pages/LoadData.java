@@ -21,6 +21,8 @@ public class LoadData extends Activity {
     private ListView listView;
     private Button addNew;
     private Button modifyID;
+    private Button deleteID;
+    private Button goHome;
     private EditText idIn;
 
     @Override
@@ -31,6 +33,8 @@ public class LoadData extends Activity {
         addNew = findViewById(R.id.addNew);
         listView = findViewById(R.id.Percentage);
         modifyID = findViewById(R.id.modifyByID);
+        deleteID = findViewById(R.id.deleteByID);
+        goHome = findViewById(R.id.Home);
         idIn = findViewById(R.id.editID);
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,21 @@ public class LoadData extends Activity {
         });
 
         loadData(); // Call loadData() to load and display data when the activity starts
+
+        deleteID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        goHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoadData.this, FinanceApp.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadData() {
@@ -61,7 +80,7 @@ public class LoadData extends Activity {
         if (!datasList.isEmpty()) {
             List<String> displayList = new ArrayList<>();
             for (Datas data : datasList) {
-                String displayText = "Income: " + data.getIncome() + ", Expenses: " + data.getExpenses() +
+                String displayText = "ID: "+ data.getId() + ", Income: " + data.getIncome() + ", Expenses: " + data.getExpenses() +
                         ", Due Date: " + data.getDueDate() + ", Target Sum: " + data.getTargetSum();
                 displayList.add(displayText);
             }
