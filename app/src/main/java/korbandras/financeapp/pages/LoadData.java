@@ -50,12 +50,18 @@ public class LoadData extends Activity {
         modifyID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoadData.this, ModifyData.class);
-                String inID = modifyID.getText().toString();
-                intent.putExtra("id",inID);
-                startActivity(intent);
+                String inID = idIn.getText().toString();
+                if (!inID.isEmpty()) {
+                        Intent intent = new Intent(LoadData.this, ModifyData.class);
+                        intent.putExtra("id", inID);
+                        startActivity(intent);
+                } else {
+                    Toast.makeText(LoadData.this, "ID field cannot be empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+
 
         loadData(); // Call loadData() to load and display data when the activity starts
 

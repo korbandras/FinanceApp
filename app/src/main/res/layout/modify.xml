@@ -37,6 +37,13 @@
         android:hint="Target Sum"
         android:inputType="number"/>
 
+    <EditText
+        android:id="@+id/savedSoFar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Saved money so far"
+        android:inputType="number" />
+
     <Button
         android:id="@+id/modifyButton"
         android:layout_width="match_parent"

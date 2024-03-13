@@ -1,6 +1,7 @@
 package korbandras.financeapp.pages;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class ModifyData extends Activity {
     private EditText modifyExpenses;
     private EditText modifyDueDate;
     private EditText modifySum;
+    private EditText savedSoFar;
     private Button modify;
     private Button goHome;
     private int entryId;
@@ -29,16 +31,25 @@ public class ModifyData extends Activity {
         modifyExpenses = findViewById(R.id.editTextExpensesModify);
         modifyDueDate = findViewById(R.id.editTextDueDateModify);
         modifySum = findViewById(R.id.editTextTargetSumModify);
+        savedSoFar = findViewById(R.id.savedSoFar);
         modify = findViewById(R.id.modifyButton);
         goHome = findViewById(R.id.Homemodify);
 
-        // Retrieve the ID passed from LoadData.java
-        entryId = getIntent().getIntExtra("ENTRY_ID", -1); // Default to -1 if not found
+        Intent intent = getIntent();
+        entryId = Integer.parseInt(intent.getStringExtra("id"));
 
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateEntry();
+            }
+        });
+
+        goHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ModifyData.this, FinanceApp.class);
+                startActivity(intent);
             }
         });
     }
