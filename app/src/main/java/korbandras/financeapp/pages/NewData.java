@@ -20,6 +20,7 @@ public class NewData extends Activity {
     private EditText editTextDueDate;
     private EditText editTextTargetSum;
     private Button calculateButton;
+    private Button homeAddNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +31,20 @@ public class NewData extends Activity {
         editTextExpenses = findViewById(R.id.editTextExpenses);
         editTextDueDate = findViewById(R.id.editTextDueDate);
         editTextTargetSum = findViewById(R.id.editTextTargetSum);
-        calculateButton = (android.widget.Button) findViewById(R.id.calculateButton);
+        calculateButton = findViewById(R.id.calculateButton);
+        homeAddNew = findViewById(R.id.homeAddNew);
 
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveNew();
+            }
+        });
+
+        homeAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goHomeif();
             }
         });
 
@@ -76,6 +85,20 @@ public class NewData extends Activity {
             return;
         }else{
             saveData(income, expenses, dueDate, sum);
+        }
+    }
+
+    private void goHomeif(){
+        String income = editTextIncome.getText().toString();
+        String expenses = editTextExpenses.getText().toString();
+        String dueDate = editTextDueDate.getText().toString();
+        String sum = editTextTargetSum.getText().toString();
+
+        Intent intent = new Intent(NewData.this, FinanceApp.class);
+        if(!income.isEmpty() || !expenses.isEmpty() || !dueDate.isEmpty() || !sum.isEmpty()){
+            Toast.makeText(NewData.this, "Can't go to home screen with data entered!", Toast.LENGTH_SHORT).show();
+        }else{
+            startActivity(intent);
         }
     }
 }

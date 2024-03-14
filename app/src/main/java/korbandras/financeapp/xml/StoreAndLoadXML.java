@@ -13,6 +13,7 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class StoreAndLoadXML {
 
             serializer.setOutput(writer);
             serializer.startDocument("UTF-8", true);
+            serializer.text("\n");
             serializer.startTag("", "datas");
             serializer.text("\n");
 
@@ -155,6 +157,7 @@ public class StoreAndLoadXML {
                 break; // Stop loop once the matching ID is found and updated
             }
         }
+        recreateXMLFile(context);
         saveXML(context, datasList); // Save the updated list back to XML
     }
 
@@ -162,21 +165,57 @@ public class StoreAndLoadXML {
         new AlertDialog.Builder(context).setTitle("Delete All Data").setMessage("Are you sure you want to delete all data?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which){
-                        deleteAllData(context);
+                        recreateXMLFile(context);
                     }
                 })
                 .setNegativeButton(android.R.string.no,null).setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 
-    // Delete all data
-    public static void deleteAllData(Context context) {
-        saveXML(context, new ArrayList<>()); // Save an empty list to overwrite existing data
-    }
-
     // Delete a specific entry by ID
     public static void deleteByID(Context context, int id) {
         List<Datas> datasList = readFromXML(context);
-        datasList.removeIf(data -> data.getId() == id); // Remove the entry with the specified ID
-        saveXML(context, datasList); // Save the modified list back to XML
+        datasList.removeIf(data -> data.getId() == id);
+        recreateXMLFile(context);
+        saveXML(context, datasList);
     }
+
+    public static boolean recreateXMLFile(Context context) {
+        File file = new File(context.getExternalFilesDir(null), FILENAME);
+
+        // Try to delete the file if it exists
+        if (file.exists()) {
+            if (!file.delete()) {
+                // If the file couldn't be deleted, return false
+                return false;
+            }
+        }
+
+        // Now, create a new, empty XML file
+        try {
+            if (file.createNewFile()) {
+                // If the file is successfully created, initialize it with a root XML structure
+                XmlSerializer serializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                serializer.setOutput(writer);
+
+                serializer.startDocument("UTF-8", true);
+                serializer.startTag("", "datas"); // Assuming "datas" is your root element
+                serializer.endTag("", "datas");
+                serializer.endDocument();
+                serializer.flush();
+
+                String initialXMLContent = writer.toString();
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(initialXMLContent.getBytes());
+                fos.close();
+
+                return true; // The file was successfully recreated and initialized
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error recreating XML file", e);
+        }
+
+        return false; // Returning false if the file wasn't created or initialized
+    }
+
 }

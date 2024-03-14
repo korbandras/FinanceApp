@@ -36,12 +36,14 @@ public class LoadData extends Activity {
         deleteID = findViewById(R.id.deleteByID);
         goHome = findViewById(R.id.Home);
         idIn = findViewById(R.id.editID);
+
+        loadData();
+
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Intent to start NewData activity should probably be outside loadData(),
                 // unless loadData() conditionally determines if NewData should be started.
-                loadData();
                 Intent intent = new Intent(LoadData.this, NewData.class);
                 startActivity(intent);
             }
@@ -51,6 +53,7 @@ public class LoadData extends Activity {
             @Override
             public void onClick(View v) {
                 String inID = idIn.getText().toString();
+
                 if (!inID.isEmpty()) {
                         Intent intent = new Intent(LoadData.this, ModifyData.class);
                         intent.putExtra("id", inID);
@@ -61,14 +64,16 @@ public class LoadData extends Activity {
             }
         });
 
-
-
-        loadData(); // Call loadData() to load and display data when the activity starts
-
         deleteID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String inID = idIn.getText().toString();
+                if(!inID.isEmpty()){
+                    deletedID(inID);
+                    loadData();
+                }else{
+                    Toast.makeText(LoadData.this, "ID field cannot be empty",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -99,7 +104,14 @@ public class LoadData extends Activity {
     }
 
     private void showError() {
-        Toast.makeText(this, "Database is empty, please add data", Toast.LENGTH_SHORT).show();
-        addNew.setVisibility(View.VISIBLE); // Show the "Add New" button if not already visible
+        Toast.makeText(this, "Database is empty, redirecting to add new data", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoadData.this, NewData.class);
+        startActivity(intent);
     }
+
+    private void deletedID(String inID){
+        int enteredID = Integer.parseInt(inID);
+        StoreAndLoadXML.deleteByID(LoadData.this, enteredID);
+    }
+
 }

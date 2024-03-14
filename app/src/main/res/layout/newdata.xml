@@ -41,7 +41,12 @@
         android:id="@+id/calculateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Calculate"
-        />
+        android:text="Calculate" />
+
+    <Button
+        android:id="@+id/homeAddNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home" />
 
 </LinearLayout>
