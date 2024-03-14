@@ -35,17 +35,14 @@ public class NewData extends Activity {
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+                saveNew();
             }
         });
 
     }
 
-    private void saveData() {
-        String income = editTextIncome.getText().toString();
-        String expenses = editTextExpenses.getText().toString();
-        String dueDate = editTextDueDate.getText().toString();
-        String sum = editTextTargetSum.getText().toString();
+    private void saveData(String income, String expenses, String dueDate, String sum) {
+
         Datas data = new Datas(income, expenses, dueDate, sum);
 
         List<Datas> dataList = new ArrayList<>();
@@ -65,6 +62,21 @@ public class NewData extends Activity {
         intent.putExtra("DueDate",dueDate);
         intent.putExtra("Sum",sum);
         startActivity(intent);
+    }
+
+
+    private void saveNew(){
+        String income = editTextIncome.getText().toString();
+        String expenses = editTextExpenses.getText().toString();
+        String dueDate = editTextDueDate.getText().toString();
+        String sum = editTextTargetSum.getText().toString();
+        double netpos = Integer.parseInt(income) - Integer.parseInt(expenses);
+        if((double) Integer.parseInt(sum) / Integer.parseInt(dueDate) > netpos || Integer.parseInt(income) < Integer.parseInt(expenses) || Integer.parseInt(dueDate) <= 0 || Integer.parseInt(sum) <= 0){
+            Toast.makeText(NewData.this, "Not possible, won't be saved",Toast.LENGTH_SHORT).show();
+            return;
+        }else{
+            saveData(income, expenses, dueDate, sum);
+        }
     }
 }
 

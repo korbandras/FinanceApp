@@ -43,7 +43,7 @@ public class FinanceApp extends Activity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StoreAndLoadXML.deleteAllData(getApplicationContext());
+                StoreAndLoadXML.showDeleteConfirmation(FinanceApp.this);
             }
         });
     }

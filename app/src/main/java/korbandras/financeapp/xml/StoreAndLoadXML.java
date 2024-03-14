@@ -1,6 +1,8 @@
 package korbandras.financeapp.xml;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.util.Xml;
 
@@ -44,28 +46,35 @@ public class StoreAndLoadXML {
             serializer.setOutput(writer);
             serializer.startDocument("UTF-8", true);
             serializer.startTag("", "datas");
+            serializer.text("\n");
 
             for (Datas data : existingDataList) {
                 serializer.startTag("", "data");
                 serializer.attribute("", "id", Integer.toString(data.getId()));
+                serializer.text("\n");
 
                 serializer.startTag("", "income");
                 serializer.text(data.getIncome());
                 serializer.endTag("", "income");
+                serializer.text("\n");
 
                 serializer.startTag("", "expenses");
                 serializer.text(data.getExpenses());
                 serializer.endTag("", "expenses");
+                serializer.text("\n");
 
                 serializer.startTag("", "dueDate");
                 serializer.text(data.getDueDate());
                 serializer.endTag("", "dueDate");
+                serializer.text("\n");
 
                 serializer.startTag("", "targetSum");
                 serializer.text(data.getTargetSum());
                 serializer.endTag("", "targetSum");
+                serializer.text("\n");
 
                 serializer.endTag("", "data");
+                serializer.text("\n");
             }
 
             serializer.endTag("", "datas");
@@ -147,6 +156,16 @@ public class StoreAndLoadXML {
             }
         }
         saveXML(context, datasList); // Save the updated list back to XML
+    }
+
+    public static void showDeleteConfirmation(final Context context){
+        new AlertDialog.Builder(context).setTitle("Delete All Data").setMessage("Are you sure you want to delete all data?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which){
+                        deleteAllData(context);
+                    }
+                })
+                .setNegativeButton(android.R.string.no,null).setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 
     // Delete all data

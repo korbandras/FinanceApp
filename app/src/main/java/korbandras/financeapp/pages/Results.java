@@ -36,19 +36,14 @@ public class Results extends Activity {
         double targetSum = Double.parseDouble(receivedSum);
         double netpositive = income - expenses;
 
-        if(targetSum / dueDate >= netpositive || income < expenses || dueDate <= 0 || targetSum <= 0){
-            results1.setText("Not possible");
-        }
-        else{
-            double permonth = targetSum / dueDate;
-            double max = netpositive;
-            double months = targetSum / max;
+        double permonth = targetSum / dueDate;
+        double max = netpositive;
+        double months = targetSum / max;
 
-            results1.setText(String.format("Save a minimum of $%.2f per month to achieve goal.", permonth));
-            results2.setText(String.format("Maximum save available in a month is $%.2f.", max));
-            results3.setText(String.format("By saving the max amount per month you can achieve your goal in %.1f months" +
+        results1.setText(String.format("Save a minimum of $%.2f per month to achieve goal.", permonth));
+        results2.setText(String.format("Maximum save available in a month is $%.2f.", max));
+        results3.setText(String.format("By saving the max amount per month you can achieve your goal in %.1f months" +
                     " compared to %d month(s) given.", months, dueDate));
-        }
 
         returnhome.setOnClickListener(new View.OnClickListener() {
             @Override
