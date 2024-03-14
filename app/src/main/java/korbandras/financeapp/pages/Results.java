@@ -13,7 +13,8 @@ public class Results extends Activity {
     private TextView results1;
     private TextView results2;
     private TextView results3;
-    private Button returnhome;
+    private Button returnHome;
+    private Button addAnother;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,8 @@ public class Results extends Activity {
         results1 = findViewById(R.id.textViewResult);
         results2 = findViewById(R.id.textViewResult2);
         results3 = findViewById(R.id.textViewResult3);
-        returnhome = findViewById(R.id.returnHome);
+        returnHome = findViewById(R.id.returnHome);
+        addAnother = findViewById(R.id.addAnother);
 
         Intent intent = getIntent();
         String receivedIncome = intent.getStringExtra("Income");
@@ -45,10 +47,18 @@ public class Results extends Activity {
         results3.setText(String.format("By saving the max amount per month you can achieve your goal in %.1f months" +
                     " compared to %d month(s) given.", months, dueDate));
 
-        returnhome.setOnClickListener(new View.OnClickListener() {
+        returnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Results.this, FinanceApp.class);
+                startActivity(intent);
+            }
+        });
+
+        addAnother.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Results.this, NewData.class);
                 startActivity(intent);
             }
         });
