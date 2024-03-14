@@ -55,10 +55,6 @@ public class ModifyData extends Activity {
     }
 
     private void updateEntry() {
-        if (entryId == -1) {
-            // Handle case where ID wasn't properly passed
-            return;
-        }
         String income = modifyIncome.getText().toString();
         String expenses = modifyExpenses.getText().toString();
         String dueDate = modifyDueDate.getText().toString();

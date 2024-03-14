@@ -50,6 +50,11 @@
             android:exported="false"
             android:label="LoadData"
             android:theme="@style/Theme.FinanceApp"/>
+        <activity
+            android:name=".pages.ModifyData"
+            android:exported="false"
+            android:label="ModifyData"
+            android:theme="@style/Theme.FinanceApp" />
     </application>
 
 </manifest>
