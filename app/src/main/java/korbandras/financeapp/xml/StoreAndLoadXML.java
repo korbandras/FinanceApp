@@ -176,17 +176,17 @@ public class StoreAndLoadXML {
         List<Datas> datasList = readFromXML(context);
         datasList.removeIf(data -> data.getId() == id);
         recreateXMLFile(context);
-        saveXML(context, datasList);
+        saveAndReassignID(context, datasList);
     }
 
-    public static boolean recreateXMLFile(Context context) {
+    public static void recreateXMLFile(Context context) {
         File file = new File(context.getExternalFilesDir(null), FILENAME);
 
         // Try to delete the file if it exists
         if (file.exists()) {
             if (!file.delete()) {
                 // If the file couldn't be deleted, return false
-                return false;
+                return;
             }
         }
 
@@ -209,13 +209,19 @@ public class StoreAndLoadXML {
                 fos.write(initialXMLContent.getBytes());
                 fos.close();
 
-                return true; // The file was successfully recreated and initialized
             }
         } catch (IOException e) {
             Log.e(TAG, "Error recreating XML file", e);
         }
 
-        return false; // Returning false if the file wasn't created or initialized
     }
 
+    public static void saveAndReassignID(Context context, List<Datas> datasList){
+        int newID = 1;
+        for(Datas data : datasList){
+            data.setId(newID);
+            newID++;
+        }
+        saveXML(context,datasList);
+    }
 }
