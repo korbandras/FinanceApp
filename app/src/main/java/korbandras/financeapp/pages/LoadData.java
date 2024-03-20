@@ -91,8 +91,17 @@ public class LoadData extends Activity {
         if (!datasList.isEmpty()) {
             List<String> displayList = new ArrayList<>();
             for (Datas data : datasList) {
-                String displayText = "ID: "+ data.getId() + ", Income: " + data.getIncome() + ", Expenses: " + data.getExpenses() +
-                        ", Due Date: " + data.getDueDate() + ", Target Sum: " + data.getTargetSum();
+                String displayText = "ID: " + data.getId() +
+                        ", Income: " + data.getIncome() +
+                        ", Expenses: " + data.getExpenses() +
+                        ", Due Date: " + data.getDueDate() +
+                        ", Target Sum: " + data.getTargetSum();
+
+                // Only append 'savedSoFar' if it's greater than 0
+                if (data.getSavedSoFar() > 0) {
+                    displayText += ", Saved So Far: " + data.getSavedSoFar();
+                }
+
                 displayList.add(displayText);
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,

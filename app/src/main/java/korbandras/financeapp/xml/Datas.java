@@ -6,6 +6,7 @@ public class Datas {
     private String expenses;
     private String dueDate;
     private String targetSum;
+    private int savedSoFar;
 
     public Datas(String income, String expenses, String dueDate, String targetSum){
         this.income = income;
@@ -14,12 +15,13 @@ public class Datas {
         this.targetSum = targetSum;
     }
 
-    public Datas(int id, String income, String expenses, String dueDate, String targetSum){
+    public Datas(int id, String income, String expenses, String dueDate, String targetSum, int savedSoFar){
         this.id = id;
         this.income = income;
         this.expenses = expenses;
         this.dueDate = dueDate;
         this.targetSum = targetSum;
+        this.savedSoFar = savedSoFar;
     }
 
     public String getIncome() {
@@ -60,5 +62,13 @@ public class Datas {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getSavedSoFar() {
+        return savedSoFar;
+    }
+
+    public void setSavedSoFar(int savedSoFar) {
+        this.savedSoFar = savedSoFar;
     }
 }

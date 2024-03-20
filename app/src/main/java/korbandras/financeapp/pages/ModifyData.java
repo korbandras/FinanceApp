@@ -59,11 +59,16 @@ public class ModifyData extends Activity {
         String expenses = modifyExpenses.getText().toString();
         String dueDate = modifyDueDate.getText().toString();
         String targetSum = modifySum.getText().toString();
+        String SavedSoFar = savedSoFar.getText().toString();
 
         // Assuming you have a method in StoreAndLoadXML to update the entry by ID
-        StoreAndLoadXML.updateEntry(getApplicationContext(), entryId, income, expenses, dueDate, targetSum);
+        StoreAndLoadXML.updateEntryNew(getApplicationContext(), entryId, income, expenses, dueDate, targetSum, Integer.parseInt(SavedSoFar));
 
         // Optionally, navigate back to the previous screen or show a confirmation message
         Toast.makeText(this, "Entry updated",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ModifyData.this, Stats.class);
+        intent.putExtra("targetSum", targetSum);
+        intent.putExtra("savedSoFar", SavedSoFar);
+        startActivity(intent);
     }
 }

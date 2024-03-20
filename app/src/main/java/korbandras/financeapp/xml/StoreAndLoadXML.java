@@ -75,6 +75,11 @@ public class StoreAndLoadXML {
                 serializer.endTag("", "targetSum");
                 serializer.text("\n");
 
+                serializer.startTag("","savedSoFar");
+                serializer.text(String.valueOf(data.getSavedSoFar()));
+                serializer.endTag("","savedSoFar");
+                serializer.text("\n");
+
                 serializer.endTag("", "data");
                 serializer.text("\n");
             }
@@ -90,7 +95,6 @@ public class StoreAndLoadXML {
         }
     }
 
-    // Read data from XML file
     public static List<Datas> readFromXML(Context context) {
         List<Datas> dataList = new ArrayList<>();
         try {
@@ -107,6 +111,7 @@ public class StoreAndLoadXML {
             Datas currentData = null;
             int currentId = 0; // Variable to hold the current ID
             String income = "", expenses = "", dueDate = "", targetSum = "";
+            int savedSoFar = 0; // Variable to hold the savedSoFar value
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 String tagName;
                 switch (eventType) {
@@ -114,6 +119,8 @@ public class StoreAndLoadXML {
                         tagName = parser.getName();
                         if ("data".equals(tagName)) {
                             currentId = Integer.parseInt(parser.getAttributeValue(null, "id"));
+                            // Initialize a new Datas object with default values, including savedSoFar
+                            currentData = new Datas(currentId, "", "", "", "", 0);
                         } else if ("income".equals(tagName)) {
                             income = parser.nextText();
                         } else if ("expenses".equals(tagName)) {
@@ -122,22 +129,34 @@ public class StoreAndLoadXML {
                             dueDate = parser.nextText();
                         } else if ("targetSum".equals(tagName)) {
                             targetSum = parser.nextText();
+                        } else if ("savedSoFar".equals(tagName)) {
+                            // Parse the savedSoFar value, if it exists
+                            String savedSoFarText = parser.nextText();
+                            savedSoFar = savedSoFarText.isEmpty() ? 0 : Integer.parseInt(savedSoFarText);
+                            if (currentData != null) {
+                                currentData.setSavedSoFar(savedSoFar);
+                            }
                         }
                         break;
                     case XmlPullParser.END_TAG:
                         tagName = parser.getName();
-                        if ("data".equals(tagName)) {
-                            Datas newData = new Datas(currentId, income, expenses, dueDate, targetSum);
-                            dataList.add(newData);
+                        if ("data".equals(tagName) && currentData != null) {
+                            // Set the parsed text to the current Datas object
+                            currentData.setIncome(income);
+                            currentData.setExpenses(expenses);
+                            currentData.setDueDate(dueDate);
+                            currentData.setTargetSum(targetSum);
+                            // Add the fully constructed Datas object to the list
+                            dataList.add(currentData);
                             // Reset variables for the next data entry
                             income = expenses = dueDate = targetSum = "";
+                            savedSoFar = 0;
                             currentId = 0;
                         }
                         break;
                 }
                 eventType = parser.next();
             }
-
             fis.close();
         } catch (Exception e) {
             Log.e(TAG, "Error reading data from XML", e);
@@ -146,7 +165,8 @@ public class StoreAndLoadXML {
     }
 
     // Update an entry by ID
-    public static void updateEntry(Context context, int id, String newIncome, String newExpenses, String newDueDate, String newTargetSum) {
+    /*
+    public static void updateEntry(Context context, int id, String newIncome, String newExpenses, String newDueDate, String newTargetSum, int savedSoFar) {
         List<Datas> datasList = readFromXML(context);
         for (Datas data : datasList) {
             if (data.getId() == id) {
@@ -154,12 +174,43 @@ public class StoreAndLoadXML {
                 data.setExpenses(newExpenses);
                 data.setDueDate(newDueDate);
                 data.setTargetSum(newTargetSum);
+                data.setSavedSoFar(savedSoFar);
                 break; // Stop loop once the matching ID is found and updated
             }
         }
         recreateXMLFile(context);
         saveXML(context, datasList); // Save the updated list back to XML
     }
+     */
+
+    public static void updateEntryNew(Context context, int id, String newIncome, String newExpenses, String newDueDate, String newTargetSum, Integer savedSoFar) {
+        List<Datas> datasList = readFromXML(context);
+        boolean isDataUpdated = false; // Flag to check if any data was updated
+
+        for (Datas data : datasList) {
+            if (data.getId() == id) {
+                // Check if each parameter is not null and not empty, then update accordingly
+                if (newIncome != null && !newIncome.trim().isEmpty()) data.setIncome(newIncome);
+                if (newExpenses != null && !newExpenses.trim().isEmpty()) data.setExpenses(newExpenses);
+                if (newDueDate != null && !newDueDate.trim().isEmpty()) data.setDueDate(newDueDate);
+                if (newTargetSum != null && !newTargetSum.trim().isEmpty()) data.setTargetSum(newTargetSum);
+
+                // Assuming savedSoFar being null means it's not being updated
+                // And it's valid to have savedSoFar as 0 or any positive number
+                if (savedSoFar != null && savedSoFar >= 0) data.setSavedSoFar(savedSoFar);
+
+                isDataUpdated = true;
+                break; // Stop loop once the matching ID is found and updated
+            }
+        }
+
+        // Only save to XML if any data was actually updated
+        if (isDataUpdated) {
+            recreateXMLFile(context);
+            saveXML(context, datasList); // Save the updated list back to XML
+        }
+    }
+
 
     public static void showDeleteConfirmation(final Context context){
         new AlertDialog.Builder(context).setTitle("Delete All Data").setMessage("Are you sure you want to delete all data?")
