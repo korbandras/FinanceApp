@@ -12,6 +12,7 @@ import java.util.List;
 
 import korbandras.financeapp.xml.Datas;
 import korbandras.financeapp.R;
+import korbandras.financeapp.xml.EnteredData;
 import korbandras.financeapp.xml.StoreAndLoadXML;
 
 public class NewData extends Activity {
@@ -21,6 +22,8 @@ public class NewData extends Activity {
     private EditText editTextTargetSum;
     private Button calculateButton;
     private Button homeAddNew;
+    private Button addToDB;
+    private Button loadData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +36,21 @@ public class NewData extends Activity {
         editTextTargetSum = findViewById(R.id.editTextTargetSum);
         calculateButton = findViewById(R.id.calculateButton);
         homeAddNew = findViewById(R.id.homeAddNew);
+        addToDB = findViewById(R.id.addToDB);
+        loadData = findViewById(R.id.loadData_addNew);
 
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveNew();
+                EnteredData enteredData = extractData();
+                saveNew(enteredData);
+
+                Intent intent = new Intent(NewData.this, Loading.class);
+                intent.putExtra("Income",enteredData.income);
+                intent.putExtra("Expenses",enteredData.expenses);
+                intent.putExtra("DueDate",enteredData.dueDate);
+                intent.putExtra("Sum",enteredData.targetSum);
+                startActivity(intent);
             }
         });
 
@@ -48,43 +61,46 @@ public class NewData extends Activity {
             }
         });
 
+        addToDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnteredData enteredData = extractData();
+                saveNew(enteredData);
+                Toast.makeText(NewData.this, "Data saved!", Toast.LENGTH_SHORT).show();
+                refreshActivity();
+            }
+        });
+
+        loadData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NewData.this, LoadData.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void saveData(String income, String expenses, String dueDate, String sum) {
-
-        Datas data = new Datas(income, expenses, dueDate, sum);
-
-        List<Datas> dataList = new ArrayList<>();
-
-        if(income.isEmpty() || expenses.isEmpty() || dueDate.isEmpty() || sum.isEmpty()){
-            Toast.makeText(NewData.this, "Please fill all fields",Toast.LENGTH_SHORT).show();
+        if (income.isEmpty() || expenses.isEmpty() || dueDate.isEmpty() || sum.isEmpty()) {
+            Toast.makeText(NewData.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        Datas data = new Datas(income, expenses, dueDate, sum);
+        List<Datas> dataList = new ArrayList<>();
         dataList.add(data);
 
         StoreAndLoadXML.saveXML(getApplicationContext(),dataList);
-
-        Intent intent = new Intent(NewData.this, Loading.class);
-        intent.putExtra("Income",income);
-        intent.putExtra("Expenses",expenses);
-        intent.putExtra("DueDate",dueDate);
-        intent.putExtra("Sum",sum);
-        startActivity(intent);
     }
 
 
-    private void saveNew(){
-        String income = editTextIncome.getText().toString();
-        String expenses = editTextExpenses.getText().toString();
-        String dueDate = editTextDueDate.getText().toString();
-        String sum = editTextTargetSum.getText().toString();
-        double netpos = Integer.parseInt(income) - Integer.parseInt(expenses);
-        if((double) Integer.parseInt(sum) / Integer.parseInt(dueDate) > netpos || Integer.parseInt(income) < Integer.parseInt(expenses) || Integer.parseInt(dueDate) <= 0 || Integer.parseInt(sum) <= 0){
+    private void saveNew(EnteredData enteredData){
+        double netpos = Integer.parseInt(enteredData.income) - Integer.parseInt(enteredData.expenses);
+
+        if((double) Integer.parseInt(enteredData.targetSum) / Integer.parseInt(enteredData.dueDate) > netpos || Integer.parseInt(enteredData.income) < Integer.parseInt(enteredData.expenses) || Integer.parseInt(enteredData.dueDate) <= 0 || Integer.parseInt(enteredData.targetSum) <= 0){
             Toast.makeText(NewData.this, "Not possible, won't be saved",Toast.LENGTH_SHORT).show();
-            return;
         }else{
-            saveData(income, expenses, dueDate, sum);
+            saveData(enteredData.income, enteredData.expenses, enteredData.dueDate, enteredData.targetSum);
         }
     }
 
@@ -100,6 +116,20 @@ public class NewData extends Activity {
         }else{
             startActivity(intent);
         }
+    }
+
+    private void refreshActivity(){
+        finish();
+        startActivity(getIntent());
+    }
+
+    private EnteredData extractData(){
+        String income = editTextIncome.getText().toString();
+        String expenses = editTextExpenses.getText().toString();
+        String dueDate = editTextDueDate.getText().toString();
+        String sum = editTextTargetSum.getText().toString();
+
+        return new EnteredData(income, expenses, dueDate, sum);
     }
 }
 

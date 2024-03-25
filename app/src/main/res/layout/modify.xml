@@ -9,6 +9,12 @@
     android:padding="16dp"
     tools:context=".pages.NewData">
 
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Do not need to fill all, only one is modifable!" />
+
     <EditText
         android:id="@+id/editTextIncomeModify"
         android:layout_width="match_parent"

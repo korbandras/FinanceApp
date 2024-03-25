@@ -44,6 +44,18 @@
         android:text="Calculate" />
 
     <Button
+        android:id="@+id/addToDB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to database" />
+
+    <Button
+        android:id="@+id/loadData_addNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load data" />
+
+    <Button
         android:id="@+id/homeAddNew"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
