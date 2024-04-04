@@ -59,8 +59,16 @@ public class Stats extends Activity {
         double percent = (double) savedSoFar/targetSum*100;
 
         target.setText(String.format("Your target was to save $%d.", targetSum));
-        progressBar.setProgress((int) percent);
-        progressText.setText(percent + "%");
-        soFar.setText(String.format("You saved $%d so far", savedSoFar));
+
+        if(targetSum >= savedSoFar){
+            progressBar.setProgress((int) percent);
+            progressText.setText(percent + "%");
+            soFar.setText(String.format("You saved $%d so far", savedSoFar));
+        }
+        else{
+            progressBar.setProgress(100);
+            progressText.setText("100%");
+            soFar.setText(String.format("You saved $%d, which is more then your goal!", savedSoFar));
+        }
     }
 }
