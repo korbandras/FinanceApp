@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import korbandras.financeapp.R;
+import korbandras.financeapp.xml.Datas;
 import korbandras.financeapp.xml.StoreAndLoadXML;
 
 public class ModifyData extends Activity {
@@ -41,7 +42,7 @@ public class ModifyData extends Activity {
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateEntry();
+                updateEntry(entryId);
             }
         });
 
@@ -54,21 +55,37 @@ public class ModifyData extends Activity {
         });
     }
 
-    private void updateEntry() {
+    private void updateEntry(int entryId) {
         String income = modifyIncome.getText().toString();
         String expenses = modifyExpenses.getText().toString();
         String dueDate = modifyDueDate.getText().toString();
         String targetSum = modifySum.getText().toString();
-        String SavedSoFar = savedSoFar.getText().toString();
+        String savedSoFarString = savedSoFar.getText().toString();
 
-        // Assuming you have a method in StoreAndLoadXML to update the entry by ID
-        StoreAndLoadXML.updateEntryNew(getApplicationContext(), entryId, income, expenses, dueDate, targetSum, Integer.parseInt(SavedSoFar));
+        // Fetch the original entry data
+        Datas originalEntry = StoreAndLoadXML.getEntryById(getApplicationContext(), entryId);
+        if (originalEntry == null) {
+            // Handle the case where the entry is not found
+            Toast.makeText(this, "Entry not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        // Optionally, navigate back to the previous screen or show a confirmation message
-        Toast.makeText(this, "Entry updated",Toast.LENGTH_SHORT).show();
+        // Use original data if new data is not provided
+        if (income.isEmpty()) income = originalEntry.getIncome();
+        if (expenses.isEmpty()) expenses = originalEntry.getExpenses();
+        if (dueDate.isEmpty()) dueDate = originalEntry.getDueDate();
+        if (targetSum.isEmpty()) targetSum = originalEntry.getTargetSum();
+
+
+        // Assuming saveEntry method updates or adds the entry in the XML
+        StoreAndLoadXML.updateEntryNew(getApplicationContext(), entryId, income, expenses, dueDate, targetSum, Integer.parseInt(savedSoFarString));
+
+        // Confirmation and navigation
+        Toast.makeText(this, "Entry updated", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ModifyData.this, Stats.class);
         intent.putExtra("targetSum", targetSum);
-        intent.putExtra("savedSoFar", SavedSoFar);
+        intent.putExtra("savedSoFar", savedSoFarString);
         startActivity(intent);
     }
+
 }

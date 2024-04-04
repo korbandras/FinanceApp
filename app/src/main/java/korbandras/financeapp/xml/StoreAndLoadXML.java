@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.util.Xml;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
@@ -17,6 +21,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class StoreAndLoadXML {
 
@@ -275,4 +282,61 @@ public class StoreAndLoadXML {
         }
         saveXML(context,datasList);
     }
+
+    public static Datas getEntryById(Context context, int entryId) {
+        List<Datas> dataList = new ArrayList<>();
+        try {
+            File file = new File(context.getExternalFilesDir(null), FILENAME);
+            if (!file.exists()) {
+                return null; // File doesn't exist, so no data to read
+            }
+            FileInputStream fis = new FileInputStream(file);
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser parser = factory.newPullParser();
+            parser.setInput(fis, null);
+
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG && "data".equals(parser.getName())) {
+                    int id = Integer.parseInt(parser.getAttributeValue(null, "id"));
+                    if (id == entryId) {
+                        // Initialize a new Datas object if the current ID matches the entryId
+                        Datas currentData = new Datas(id, "", "", "", "", 0);
+                        while (!(eventType == XmlPullParser.END_TAG && "data".equals(parser.getName()))) {
+                            if (eventType == XmlPullParser.START_TAG) {
+                                String tagName = parser.getName();
+                                switch (tagName) {
+                                    case "income":
+                                        currentData.setIncome(parser.nextText());
+                                        break;
+                                    case "expenses":
+                                        currentData.setExpenses(parser.nextText());
+                                        break;
+                                    case "dueDate":
+                                        currentData.setDueDate(parser.nextText());
+                                        break;
+                                    case "targetSum":
+                                        currentData.setTargetSum(parser.nextText());
+                                        break;
+                                    case "savedSoFar":
+                                        currentData.setSavedSoFar(Integer.parseInt(parser.nextText()));
+                                        break;
+                                }
+                            }
+                            eventType = parser.next();
+                        }
+                        fis.close();
+                        return currentData; // Return the found Datas object
+                    }
+                }
+                eventType = parser.next();
+            }
+            fis.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Error reading data from XML", e);
+        }
+        return null; // Return null if the entry is not found
+    }
+
 }
