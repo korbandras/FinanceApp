@@ -37,7 +37,7 @@
         android:id="@+id/editID"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter ID you want to modify"
+        android:hint="Enter ID you want to modify or delete"
         android:inputType="numberDecimal"
         app:layout_constraintTop_toBottomOf="@id/middle_guideline"
         app:layout_constraintStart_toStartOf="parent"
