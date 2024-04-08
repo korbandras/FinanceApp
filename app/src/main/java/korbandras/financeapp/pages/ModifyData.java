@@ -80,12 +80,13 @@ public class ModifyData extends Activity {
         // Assuming saveEntry method updates or adds the entry in the XML
         StoreAndLoadXML.updateEntryNew(getApplicationContext(), entryId, income, expenses, dueDate, targetSum, Integer.parseInt(savedSoFarString));
 
-        // Confirmation and navigation
-        Toast.makeText(this, "Entry updated", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(ModifyData.this, Stats.class);
-        intent.putExtra("targetSum", targetSum);
-        intent.putExtra("savedSoFar", savedSoFarString);
-        startActivity(intent);
+        if (!savedSoFarString.isEmpty()) {
+            // Confirmation and navigation
+            Toast.makeText(this, "Entry updated", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ModifyData.this, Stats.class);
+            intent.putExtra("targetSum", targetSum);
+            intent.putExtra("savedSoFar", savedSoFarString);
+            startActivity(intent);
+        }
     }
-
 }
