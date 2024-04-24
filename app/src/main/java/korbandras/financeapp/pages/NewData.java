@@ -43,14 +43,19 @@ public class NewData extends Activity {
             @Override
             public void onClick(View v) {
                 EnteredData enteredData = extractData();
-                saveNew(enteredData);
 
-                Intent intent = new Intent(NewData.this, Loading.class);
-                intent.putExtra("Income",enteredData.income);
-                intent.putExtra("Expenses",enteredData.expenses);
-                intent.putExtra("DueDate",enteredData.dueDate);
-                intent.putExtra("Sum",enteredData.targetSum);
-                startActivity(intent);
+
+                if(saveNew(enteredData)){
+                    Intent intent = new Intent(NewData.this, Loading.class);
+                    intent.putExtra("Income",enteredData.income);
+                    intent.putExtra("Expenses",enteredData.expenses);
+                    intent.putExtra("DueDate",enteredData.dueDate);
+                    intent.putExtra("Sum",enteredData.targetSum);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(NewData.this, NewData.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -94,13 +99,15 @@ public class NewData extends Activity {
     }
 
 
-    private void saveNew(EnteredData enteredData){
+    private boolean saveNew(EnteredData enteredData){
         double netpos = Integer.parseInt(enteredData.income) - Integer.parseInt(enteredData.expenses);
 
         if((double) Integer.parseInt(enteredData.targetSum) / Integer.parseInt(enteredData.dueDate) > netpos || Integer.parseInt(enteredData.income) < Integer.parseInt(enteredData.expenses) || Integer.parseInt(enteredData.dueDate) <= 0 || Integer.parseInt(enteredData.targetSum) <= 0){
             Toast.makeText(NewData.this, "Not possible, won't be saved",Toast.LENGTH_SHORT).show();
+            return false;
         }else{
             saveData(enteredData.income, enteredData.expenses, enteredData.dueDate, enteredData.targetSum);
+            return true;
         }
     }
 
