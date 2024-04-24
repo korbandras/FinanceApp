@@ -1,9 +1,5 @@
 package korbandras.financeapp.xml;
 
-import android.content.Intent;
-
-import korbandras.financeapp.pages.Loading;
-import korbandras.financeapp.pages.NewData;
 
 public class EnteredData {
     public String income;
