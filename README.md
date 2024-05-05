@@ -1,0 +1,1 @@
+Ahhoz, hogy az applikációt le tudjuk futtatni az Android Studioban, az app -> src -> mian -> java/korbandras/financeapp -> pages -> FinanceApp.java filet kell elindítani az emultált eszközön, emellett alapértelmezetten is azt indítja el
